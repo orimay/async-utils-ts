@@ -50,6 +50,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "test": "vitest",
     "pub": "npm run build && npm version patch --force && npm publish"
   },
   "devDependencies": {
@@ -61,6 +62,7 @@
     "prettier": "^3.0.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
-    "vite-plugin-dts": "^3.6.3"
+    "vite-plugin-dts": "^3.6.3",
+    "vitest": "^1.2.2"
   }
 }
