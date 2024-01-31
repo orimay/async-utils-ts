@@ -1,156 +1,154 @@
 # async-utils-ts
 
-A collection of utility functions for asynchronous operations in TypeScript.
+This is a collection of TypeScript utility functions for handling asynchronous
+tasks.cript.
 
 [![npm version](https://badge.fury.io/js/async-utils-ts.svg)](https://badge.fury.io/js/async-utils-ts)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
 
+Using npm:
+
 ```bash
 npm install async-utils-ts
-# or
+```
+
+Using yarn:
+
+```bash
 yarn add async-utils-ts
 ```
 
-## Usage
+## API
 
 ### microtask
 
-Creates a promise that is resolved in the microtask queue.
+Creates a new Promise which resolves by queueing a microtask.
 
-```typescript
-import { microtask } from 'async-utils-ts';
-
+```ts
 microtask().then(() => {
-  // Your microtask logic here
+  console.log('This will run as soon as possible, asynchronously.');
 });
 ```
 
 ### macrotask
 
-Creates a promise that is resolved after a macro task (using `setTimeout`).
+Creates a promise that resolves after the current event loop has been processed
+(i.e., after all microtasks have been completed).
 
-```typescript
-import { macrotask } from 'async-utils-ts';
-
+```ts
 macrotask().then(() => {
-  // Your macrotask logic here
+  console.log('This is a macrotask');
 });
 ```
 
 ### animationFrame
 
-Creates a promise that is resolved in the next animation frame.
+Creates a new Promise that is resolved using `requestAnimationFrame`.
 
-```typescript
-import { animationFrame } from 'async-utils-ts';
-
-animationFrame().then(() => {
-  // Your animation frame logic here
-});
+```ts
+async function animate() {
+  // Wait for the next frame
+  await animationFrame();
+}
 ```
 
 ### timeout
 
-Creates a promise that is resolved after a specified timeout in milliseconds.
+Creates a Promise that resolves after a specified duration.
 
-```typescript
-import { timeout } from 'async-utils-ts';
-
-timeout(1000).then(() => {
-  // Your timeout logic here after 1000 milliseconds
-});
+```ts
+// Wait for 1 second (1000 ms)
+await timeout(1000);
 ```
 
 ### filter
 
-Filters an array asynchronously based on a given predicate.
+Filters elements of the input array asynchronously based on the provided
+predicate function.
 
-```typescript
-import { filter } from 'async-utils-ts';
-
+```ts
 const arr = [1, 2, 3, 4, 5];
 
-filter(arr, async value => {
-  // Your asynchronous predicate logic here
-  return value > 2;
-}).then(result => {
-  // result will be [3, 4, 5]
-});
+// Predicate function to check if a number is even
+async function isEven(num) {
+  return num % 2 === 0;
+}
+
+// Usage
+const result = await filter(arr, isEven);
+console.log(result); // outputs: [2, 4]
 ```
 
 ### pSome
 
-Returns a promise that resolves to `true` if at least one element in the array
-satisfies the predicate.
+Checks if any of the elements from the iterable satisfy the condition of the
+provided predicate function.
 
-```typescript
-import { pSome } from 'async-utils-ts';
+```ts
+const iter = [1, 2, 3, 4, 5];
 
-const arr = [1, 2, 3, 4, 5];
+// Predicate function to check if a number is even
+async function isEven(num) {
+  return num % 2 === 0;
+}
 
-pSome(arr, async value => {
-  // Your asynchronous predicate logic here
-  return value > 2;
-}).then(result => {
-  // result will be true
-});
+// Usage
+const result = await pSome(iter, isEven);
+console.log(result); // outputs: true
 ```
 
 ### pNone
 
-Returns a promise that resolves to `true` if none of the elements in the array
-satisfy the predicate.
+Checks if none of the elements from the iterable pass the condition of the
+provided predicate function.
 
-```typescript
-import { pNone } from 'async-utils-ts';
+```ts
+const iter = [1, 2, 3, 4, 5];
 
-const arr = [1, 2, 3, 4, 5];
+// Predicate function to check if a number is even
+async function isEven(num) {
+  return num % 2 === 0;
+}
 
-pNone(arr, async value => {
-  // Your asynchronous predicate logic here
-  return value > 5;
-}).then(result => {
-  // result will be true
-});
+// Usage
+const result = await pNone(iter, isEven);
+console.log(result); // outputs: false
 ```
 
 ### pEvery
 
-Returns a promise that resolves to `true` if every element in the array
-satisfies the predicate.
+Checks if all elements from the iterable satisfy the condition of the provided
+predicate function.
 
-```typescript
-import { pEvery } from 'async-utils-ts';
+```ts
+const iter = [1, 2, 3, 4, 5];
 
-const arr = [1, 2, 3, 4, 5];
+// Predicate function to check if a number is even
+async function isEven(num) {
+  return num % 2 === 0;
+}
 
-pEvery(arr, async value => {
-  // Your asynchronous predicate logic here
-  return value > 0;
-}).then(result => {
-  // result will be true
-});
+// Usage
+const result = await pEvery(iter, isEven);
+console.log(result); // outputs: false
 ```
 
 ### first
 
-Returns a promise that resolves to the first value produced by an asynchronous
-generator.
+Retrieves the first value from an async generator.
 
-```typescript
-import { first } from 'async-utils-ts';
-
-async function* myGenerator() {
+```ts
+async function* asyncGen() {
   yield 1;
   yield 2;
   yield 3;
 }
 
-first(myGenerator()).then(result => {
-  // result will be 1
-});
+// Usage
+const result = await first(asyncGen());
+console.log(result); // outputs: 1
 ```
 
 ## License
