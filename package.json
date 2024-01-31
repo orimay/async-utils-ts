@@ -1,6 +1,6 @@
 {
   "name": "async-utils-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A collection of utility functions for asynchronous operations in TypeScript.",
   "author": "Dmitrii Baranov <dmitrii.a.baranov@gmail.com>",
   "license": "MIT",
